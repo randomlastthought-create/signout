@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1150">
+  <defs>
+    <linearGradient id="bodyFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#fafafb"/>
+      <stop offset="0.85" stop-color="#f3f3f6"/>
+      <stop offset="1" stop-color="#ececf0"/>
+    </linearGradient>
+    <linearGradient id="sleeveShadeL" x1="1" y1="0" x2="0" y2="0.4">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#d9d9e0" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="sleeveShadeR" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#d9d9e0" stop-opacity="0.9"/>
+    </linearGradient>
+    <radialGradient id="chestGlow" cx="0.5" cy="0.32" r="0.75">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="collarRib" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2f2f5"/>
+      <stop offset="0.5" stop-color="#e2e2e8"/>
+      <stop offset="1" stop-color="#efeff3"/>
+    </linearGradient>
+    <filter id="blurS" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="blurM" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="blurL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="500" cy="1092" rx="330" ry="34" fill="#b9bac6" opacity="0.35" filter="url(#blurL)"/>
+
+  <!-- shadow behind silhouette -->
+  <path d="M395 146 C352 152 302 162 258 180 C186 222 128 306 100 402
+           L233 476 C258 452 276 436 292 424
+           C282 640 280 880 288 1084
+           C420 1098 580 1098 712 1084
+           C720 880 718 640 708 424
+           C724 436 742 452 767 476 L900 402
+           C872 306 814 222 742 180
+           C698 162 648 152 605 146
+           C570 208 430 208 395 146 Z"
+        transform="translate(0,14)" fill="#c9cad4" opacity="0.55" filter="url(#blurL)"/>
+
+  <!-- shirt silhouette -->
+  <path id="tee" d="M395 132 C352 138 302 148 258 168
+           C186 210 128 296 100 392
+           L233 468 C258 444 276 430 292 418
+           C282 636 280 878 288 1078
+           C420 1092 580 1092 712 1078
+           C720 878 718 636 708 418
+           C724 430 742 444 767 468 L900 392
+           C872 296 814 210 742 168
+           C698 148 648 138 605 132
+           C570 196 430 196 395 132 Z"
+        fill="url(#bodyFill)"/>
+
+  <g clip-path="url(#teeClip)">
+    <clipPath id="teeClip"><use href="#tee"/></clipPath>
+
+    <!-- chest highlight -->
+    <ellipse cx="500" cy="430" rx="330" ry="300" fill="url(#chestGlow)" opacity="0.9"/>
+
+    <!-- side shading -->
+    <path d="M292 418 C282 636 280 878 288 1078 L360 1078 C330 860 332 620 348 430 Z" fill="#dfdfe6" opacity="0.55" filter="url(#blurM)"/>
+    <path d="M708 418 C718 636 720 878 712 1078 L640 1078 C670 860 668 620 652 430 Z" fill="#dfdfe6" opacity="0.55" filter="url(#blurM)"/>
+
+    <!-- sleeve shading toward outer edge -->
+    <path d="M258 168 C186 210 128 296 100 392 L233 468 C250 452 268 436 292 418 L300 300 Z" fill="url(#sleeveShadeL)" opacity="0.6"/>
+    <path d="M742 168 C814 210 872 296 900 392 L767 468 C750 452 732 436 708 418 L700 300 Z" fill="url(#sleeveShadeR)" opacity="0.6"/>
+
+    <!-- armpit shadows -->
+    <path d="M270 430 C290 415 305 408 320 406 C305 440 298 470 296 500" stroke="#c9c9d2" stroke-width="16" fill="none" opacity="0.55" filter="url(#blurM)"/>
+    <path d="M730 430 C710 415 695 408 680 406 C695 440 702 470 704 500" stroke="#c9c9d2" stroke-width="16" fill="none" opacity="0.55" filter="url(#blurM)"/>
+
+    <!-- shoulder highlights -->
+    <path d="M270 180 C320 158 380 148 398 146" stroke="#ffffff" stroke-width="14" fill="none" opacity="0.8" filter="url(#blurS)"/>
+    <path d="M730 180 C680 158 620 148 602 146" stroke="#ffffff" stroke-width="14" fill="none" opacity="0.8" filter="url(#blurS)"/>
+
+    <!-- soft wrinkles (organic, asymmetric) -->
+    <path d="M310 575 C400 590 480 560 585 578" stroke="#d8d8e0" stroke-width="6" fill="none" opacity="0.35" filter="url(#blurM)"/>
+    <path d="M420 715 C520 698 620 712 700 730" stroke="#d8d8e0" stroke-width="7" fill="none" opacity="0.3" filter="url(#blurM)"/>
+    <path d="M305 870 C380 852 450 878 540 862" stroke="#dadae2" stroke-width="6" fill="none" opacity="0.3" filter="url(#blurM)"/>
+    <path d="M470 985 C560 968 640 985 700 1000" stroke="#d8d8e0" stroke-width="7" fill="none" opacity="0.28" filter="url(#blurM)"/>
+    <path d="M388 620 C402 720 390 810 402 920" stroke="#dcdce4" stroke-width="5" fill="none" opacity="0.3" filter="url(#blurM)"/>
+    <path d="M598 560 C588 660 600 760 588 870" stroke="#dcdce4" stroke-width="5" fill="none" opacity="0.28" filter="url(#blurM)"/>
+    <path d="M430 255 C442 305 445 342 440 378" stroke="#e2e2e9" stroke-width="5" fill="none" opacity="0.5" filter="url(#blurS)"/>
+    <path d="M572 260 C560 305 556 345 562 380" stroke="#e2e2e9" stroke-width="5" fill="none" opacity="0.5" filter="url(#blurS)"/>
+    <!-- sleeve creases -->
+    <path d="M175 275 C205 310 230 355 248 400" stroke="#d6d6de" stroke-width="7" fill="none" opacity="0.6" filter="url(#blurM)"/>
+    <path d="M825 275 C795 310 770 355 752 400" stroke="#d6d6de" stroke-width="7" fill="none" opacity="0.6" filter="url(#blurM)"/>
+    <!-- hem fold shadow -->
+    <path d="M290 1040 C430 1058 570 1058 710 1040 L712 1078 C580 1092 420 1092 288 1078 Z" fill="#dcdce4" opacity="0.5" filter="url(#blurS)"/>
+
+    <!-- sleeve seams -->
+    <path d="M262 172 C278 250 288 330 293 416" stroke="#dddde4" stroke-width="2.5" fill="none"/>
+    <path d="M266 176 C282 252 291 332 296 414" stroke="#f6f6f8" stroke-width="1.5" fill="none"/>
+    <path d="M738 172 C722 250 712 330 707 416" stroke="#dddde4" stroke-width="2.5" fill="none"/>
+    <path d="M734 176 C718 252 709 332 704 414" stroke="#f6f6f8" stroke-width="1.5" fill="none"/>
+    <!-- sleeve hems -->
+    <path d="M110 400 L237 473" stroke="#dcdce3" stroke-width="3" fill="none" transform="translate(-4,-11)"/>
+    <path d="M110 400 L237 473" stroke="#e8e8ee" stroke-width="2" fill="none" transform="translate(-1,-18)"/>
+    <path d="M890 400 L763 473" stroke="#dcdce3" stroke-width="3" fill="none" transform="translate(4,-11)"/>
+    <path d="M890 400 L763 473" stroke="#e8e8ee" stroke-width="2" fill="none" transform="translate(1,-18)"/>
+    <!-- bottom hem stitching -->
+    <path d="M292 1056 C430 1072 570 1072 708 1056" stroke="#dcdce3" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+    <path d="M292 1064 C430 1080 570 1080 708 1064" stroke="#dcdce3" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+    <!-- shoulder seams -->
+    <path d="M300 158 C340 148 375 141 396 138" stroke="#dedee5" stroke-width="2.5" fill="none"/>
+    <path d="M700 158 C660 148 625 141 604 138" stroke="#dedee5" stroke-width="2.5" fill="none"/>
+  </g>
+
+  <!-- collar -->
+  <!-- inner back of collar (visible through neck opening) -->
+  <path d="M398 136 C440 118 560 118 602 136 C575 165 425 165 398 136 Z" fill="#dcdce3"/>
+  <path d="M398 136 C440 122 560 122 602 136 C575 152 425 152 398 136 Z" fill="#cfcfd8"/>
+  <!-- ribbed collar band -->
+  <path d="M392 130 C370 133 352 137 342 141 C362 218 638 218 658 141 C648 137 630 133 608 130
+           C606 170 582 196 500 196 C418 196 394 170 392 130 Z"
+        fill="url(#collarRib)" stroke="#d5d5dd" stroke-width="1.5"/>
+  <!-- collar rib texture: short perpendicular ticks -->
+  <g stroke="#c8c9d3" stroke-width="1.1" opacity="0.55" fill="none">
+    <path d="M368 150 L390 143"/><path d="M382 165 L403 156"/><path d="M398 178 L417 167"/>
+    <path d="M416 189 L432 176"/><path d="M437 197 L450 183"/><path d="M460 202 L470 187"/>
+    <path d="M484 205 L491 189"/><path d="M508 205 L510 189"/><path d="M532 203 L528 187"/>
+    <path d="M555 199 L546 184"/><path d="M577 192 L564 178"/><path d="M597 183 L582 171"/>
+    <path d="M614 172 L597 162"/><path d="M628 158 L608 150"/><path d="M632 149 L610 143"/>
+  </g>
+  <!-- collar bottom edge stitch -->
+  <path d="M348 150 C375 224 625 224 652 150" stroke="#c9c9d3" stroke-width="2" fill="none" opacity="0.8"/>
+  <!-- shadow cast by collar onto chest -->
+  <path d="M352 156 C380 226 620 226 648 156 C625 250 375 250 352 156 Z" fill="#d4d4dd" opacity="0.45" filter="url(#blurM)"/>
+</svg>
