@@ -162,30 +162,37 @@ export default function SignExperience({
             </div>
 
             {mode === "owner" ? (
-              <div className="rounded-3xl bg-violet-50 p-5 sm:col-span-2 lg:col-span-1">
-                <p className="text-sm font-semibold text-violet-900">
-                  💜 This is your space
-                </p>
-                <p className="mt-1 text-sm text-violet-800/80">
-                  Share your link with friends and let them leave their mark! 😊
-                </p>
-                <button
-                  onClick={() => {
-                    const stage = stageRef.current;
-                    if (!stage) return;
-                    const uri = stage.toDataURL({ pixelRatio: 2 });
-                    const link = document.createElement("a");
-                    link.download = `${username}-signout-shirt.png`;
-                    link.href = uri;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  }}
-                  className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-violet-600/20 transition-all hover:bg-violet-700 active:scale-[0.98]"
-                >
-                  ⬇️ Download Shirt
-                </button>
-              </div>
+              <>
+                <div className="rounded-3xl bg-violet-50 p-5 sm:col-span-2 lg:col-span-1">
+                  <p className="text-sm font-semibold text-violet-900">
+                    💜 This is your space
+                  </p>
+                  <p className="mt-1 text-sm text-violet-800/80">
+                    Share your link with friends and let them leave their mark! 😊
+                  </p>
+                  <button
+                    onClick={() => {
+                      const stage = stageRef.current;
+                      if (!stage) return;
+                      const uri = stage.toDataURL({ pixelRatio: 2 });
+                      const link = document.createElement("a");
+                      link.download = `${username}-signout-shirt.png`;
+                      link.href = uri;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-violet-600/20 transition-all hover:bg-violet-700 active:scale-[0.98]"
+                  >
+                    ⬇️ Download Shirt
+                  </button>
+                </div>
+                <GiftSettings
+                  username={username}
+                  displayName={displayName}
+                  initialGift={gift ?? null}
+                />
+              </>
             ) : (
               <div></div>
             )}

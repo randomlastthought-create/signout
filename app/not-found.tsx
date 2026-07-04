@@ -6,7 +6,7 @@ export default function NotFound() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
       <Logo />
       <h1 className="text-2xl font-bold text-slate-900">
-        This shirt doesn&apos;t exist (yet) 👕
+        This shirt doesn&apos;t exist (yet) 
       </h1>
       <p className="max-w-md text-slate-600">
         No one has claimed this link. It could be yours — create your own
