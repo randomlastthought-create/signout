@@ -12,7 +12,7 @@ const steps = [
   {
     number: "02",
     title: "Pass the link around",
-    text: "signout.app/you goes in the group chat, the class list, wherever your people are.",
+    text: "https://signout-tan.vercel.app/you goes in the group chat, the class list, wherever your people are.",
   },
   {
     number: "03",

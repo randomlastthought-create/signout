@@ -129,15 +129,7 @@ export default function CreateShirtForm() {
           />
         </label>
 
-        <div className="mt-3 flex items-baseline gap-1 overflow-hidden rounded-xl bg-violet-50 px-4 py-2.5 text-sm">
-          <span className="shrink-0 text-violet-600/70">Your shareable link: </span>
-          <span
-            className="min-w-0 truncate font-mono font-semibold text-violet-800"
-            title={`signout.app/${username || "username"}`}
-          >
-            signout.app/{username || "username"}
-          </span>
-        </div>
+       
 
         {error && (
           <p className="mt-3 rounded-xl bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600">
