@@ -158,7 +158,7 @@ export default function CreateShirtForm() {
 
       {giftOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 p-4 backdrop-blur-sm animate-overlay-in sm:items-center"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 backdrop-blur-sm animate-overlay-in sm:items-center sm:p-4"
           onClick={() => !loading && setGiftOpen(false)}
         >
           <div
@@ -166,8 +166,13 @@ export default function CreateShirtForm() {
             aria-modal="true"
             aria-label="Add gift details"
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-[0_30px_80px_-20px_rgba(80,70,180,0.5)] animate-modal-pop"
+            className="relative w-full rounded-t-3xl bg-white p-6 pt-7 shadow-[0_30px_80px_-20px_rgba(80,70,180,0.5)] animate-sheet-up sm:max-w-sm sm:rounded-3xl sm:pt-6"
+            style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 1.5rem)" }}
           >
+            <span
+              aria-hidden
+              className="absolute left-1/2 top-2.5 h-1.5 w-10 -translate-x-1/2 rounded-full bg-slate-200 sm:hidden"
+            />
             <div className="flex items-start gap-3">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-violet-500 to-fuchsia-500 text-2xl shadow-lg shadow-violet-500/30">
                 🎁

@@ -122,3 +122,26 @@ body {
 .animate-nudge-in {
   animation: nudge-in 0.32s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
 }
+
+/* Bottom sheet on mobile: slides up from below the viewport. On larger
+   screens the same class becomes a centered pop (see media query). */
+@keyframes sheet-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-sheet-up {
+  animation: sheet-up 0.34s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+@media (min-width: 640px) {
+  .animate-sheet-up {
+    animation: modal-pop 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+  }
+}

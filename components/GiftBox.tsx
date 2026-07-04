@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "@/components/toast/Toaster";
 import type { GiftDetails } from "@/lib/types";
 
@@ -19,14 +19,7 @@ export default function GiftBox({
 }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [nudge, setNudge] = useState(false);
-
-  // Nudge visitors toward the gift box a few seconds after they land, since
-  // the floating button alone is easy to miss.
-  useEffect(() => {
-    const t = setTimeout(() => setNudge(true), 5000);
-    return () => clearTimeout(t);
-  }, []);
+  const [nudge, setNudge] = useState(true);
 
   const openModal = () => {
     setNudge(false);
@@ -99,7 +92,7 @@ export default function GiftBox({
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 p-4 backdrop-blur-sm animate-overlay-in sm:items-center"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/50 backdrop-blur-sm animate-overlay-in sm:items-center sm:p-4"
           onClick={() => setOpen(false)}
         >
           <div
@@ -107,9 +100,13 @@ export default function GiftBox({
             aria-modal="true"
             aria-label={`Send ${displayName} a gift`}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-[0_30px_80px_-20px_rgba(80,70,180,0.5)] animate-modal-pop"
+            className="w-full overflow-hidden rounded-t-3xl bg-white shadow-[0_30px_80px_-20px_rgba(80,70,180,0.5)] animate-sheet-up sm:max-w-sm sm:rounded-3xl"
           >
-            <div className="relative bg-violet-600 px-6 pb-5 pt-6 text-white">
+            <div className="relative bg-violet-600 px-6 pb-5 pt-7 text-white sm:pt-6">
+              <span
+                aria-hidden
+                className="absolute left-1/2 top-2.5 h-1.5 w-10 -translate-x-1/2 rounded-full bg-white/30 sm:hidden"
+              />
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close"
@@ -128,7 +125,10 @@ export default function GiftBox({
               </p>
             </div>
 
-            <div className="space-y-3 p-6">
+            <div
+              className="space-y-3 p-6"
+              style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 1.5rem)" }}
+            >
               <div className="rounded-2xl bg-slate-50 px-4 py-3">
                 <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
                   Bank

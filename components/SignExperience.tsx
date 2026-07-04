@@ -6,6 +6,7 @@ import ShirtBoard from "@/components/canvas/ShirtBoardLazy";
 import Toolbar from "@/components/Toolbar";
 import CopyLinkButton from "@/components/CopyLinkButton";
 import GiftBox from "@/components/GiftBox";
+import GiftSettings from "@/components/GiftSettings";
 import Logo from "@/components/Logo";
 import Spinner from "@/components/Spinner";
 import { toast } from "@/components/toast/Toaster";
