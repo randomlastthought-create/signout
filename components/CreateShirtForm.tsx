@@ -128,9 +128,12 @@ export default function CreateShirtForm() {
           />
         </label>
 
-        <div className="mt-3 rounded-xl bg-violet-50 px-4 py-2.5 text-sm">
-          <span className="text-violet-600/70">Your shareable link: </span>
-          <span className="font-mono font-semibold text-violet-800">
+        <div className="mt-3 flex items-baseline gap-1 overflow-hidden rounded-xl bg-violet-50 px-4 py-2.5 text-sm">
+          <span className="shrink-0 text-violet-600/70">Your shareable link: </span>
+          <span
+            className="min-w-0 truncate font-mono font-semibold text-violet-800"
+            title={`signout.app/${username || "username"}`}
+          >
             signout.app/{username || "username"}
           </span>
         </div>

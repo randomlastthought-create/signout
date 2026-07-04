@@ -137,8 +137,12 @@ export default function SignExperience({
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-violet-100 text-2xl font-bold text-violet-700">
                 {displayName.charAt(0).toUpperCase()}
               </div>
-              <h1 className="mt-3 text-xl font-bold text-slate-900">
-                {displayName} <span aria-hidden>✨</span>
+              <h1
+                className="mt-3 flex items-center justify-center gap-1.5 text-xl font-bold text-slate-900"
+                title={displayName}
+              >
+                <span className="min-w-0 truncate">{displayName}</span>
+                <span aria-hidden className="shrink-0">✨</span>
               </h1>
               <p className="mt-0.5 text-sm text-slate-500">Class of {new Date(createdAt).getFullYear()}</p>
               {mode === "owner" && (

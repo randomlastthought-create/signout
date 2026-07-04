@@ -69,8 +69,8 @@ export default function GiftBox({
             </button>
             <div className="flex items-start gap-2.5">
               <span aria-hidden className="text-2xl leading-none">🎁</span>
-              <div className="pr-3">
-                <p className="text-sm font-bold text-slate-900">
+              <div className="min-w-0 pr-3">
+                <p className="line-clamp-2 text-sm font-bold text-slate-900" title={displayName}>
                   Psst — {displayName} accepts gifts!
                 </p>
                 <p className="mt-0.5 text-xs leading-snug text-slate-500">
@@ -117,7 +117,7 @@ export default function GiftBox({
                 </svg>
               </button>
               <span aria-hidden className="text-4xl">🎁</span>
-              <h3 className="mt-2 text-xl font-bold">
+              <h3 className="mt-2 line-clamp-2 text-xl font-bold" title={displayName}>
                 Spoil {displayName} a little
               </h3>
               <p className="mt-1 text-sm text-white/80">
@@ -129,19 +129,19 @@ export default function GiftBox({
               className="space-y-3 p-6"
               style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 1.5rem)" }}
             >
-              <div className="rounded-2xl bg-slate-50 px-4 py-3">
+              <div className="min-w-0 rounded-2xl bg-slate-50 px-4 py-3">
                 <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
                   Bank
                 </p>
-                <p className="mt-0.5 text-sm font-semibold text-slate-900">
+                <p className="mt-0.5 truncate text-sm font-semibold text-slate-900" title={gift.bankName}>
                   {gift.bankName}
                 </p>
               </div>
-              <div className="rounded-2xl bg-slate-50 px-4 py-3">
+              <div className="min-w-0 rounded-2xl bg-slate-50 px-4 py-3">
                 <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
                   Account name
                 </p>
-                <p className="mt-0.5 text-sm font-semibold text-slate-900">
+                <p className="mt-0.5 truncate text-sm font-semibold text-slate-900" title={gift.accountName}>
                   {gift.accountName}
                 </p>
               </div>

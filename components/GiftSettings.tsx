@@ -92,15 +92,15 @@ export default function GiftSettings({
               Loved ones can send you gifts from your shirt page.
             </p>
             <div className="mt-3 space-y-1.5 rounded-xl bg-slate-50 p-3 text-sm">
-              <p className="text-slate-700">
+              <p className="truncate text-slate-700" title={gift.bankName}>
                 <span className="text-slate-400">Bank · </span>
                 {gift.bankName}
               </p>
-              <p className="text-slate-700">
+              <p className="truncate text-slate-700" title={gift.accountName}>
                 <span className="text-slate-400">Name · </span>
                 {gift.accountName}
               </p>
-              <p className="font-mono font-semibold text-violet-700">
+              <p className="truncate font-mono font-semibold text-violet-700">
                 {gift.accountNumber}
               </p>
             </div>
