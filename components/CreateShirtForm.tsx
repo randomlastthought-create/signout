@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
 import { toast } from "@/components/toast/Toaster";
-
-const slugify = (v: string) =>
-  v.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 20);
+import { sanitizeUsernameInput, finalizeUsername } from "@/lib/username";
 
 const inputClass =
   "mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-base outline-none transition-colors focus:border-violet-400 focus:ring-2 focus:ring-violet-100 sm:text-sm";
@@ -27,16 +25,18 @@ export default function CreateShirtForm() {
 
   const onNameChange = (v: string) => {
     setDisplayName(v);
-    if (!touched) setUsername(slugify(v));
+    if (!touched) setUsername(finalizeUsername(v));
   };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (username.length < 3) {
+    const clean = finalizeUsername(username);
+    if (clean.length < 3) {
       setError("Username must be at least 3 characters.");
       return;
     }
+    setUsername(clean);
     setGiftError(null);
     if (!accountName) setAccountName(displayName.trim());
     setGiftOpen(true);
@@ -118,8 +118,9 @@ export default function CreateShirtForm() {
             value={username}
             onChange={(e) => {
               setTouched(true);
-              setUsername(slugify(e.target.value));
+              setUsername(sanitizeUsernameInput(e.target.value));
             }}
+            onBlur={() => setUsername((v) => finalizeUsername(v))}
             required
             minLength={3}
             maxLength={20}

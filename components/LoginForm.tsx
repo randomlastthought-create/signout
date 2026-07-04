@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/Spinner";
+import { sanitizeUsernameInput, finalizeUsername } from "@/lib/username";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -10,12 +11,9 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const slugify = (v: string) =>
-    v.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 20);
-
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const clean = slugify(username);
+    const clean = finalizeUsername(username);
     if (clean.length < 3) {
       setError("Username must be at least 3 characters.");
       return;
@@ -54,7 +52,7 @@ export default function LoginForm() {
         <input
           value={username}
           onChange={(e) => {
-            setUsername(slugify(e.target.value));
+            setUsername(sanitizeUsernameInput(e.target.value));
             setError(null);
           }}
           required
