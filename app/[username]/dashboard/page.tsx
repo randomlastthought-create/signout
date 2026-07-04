@@ -34,7 +34,7 @@ export default async function DashboardPage({ params }: Props) {
       username={data.username}
       displayName={data.displayName}
       createdAt={data.createdAt}
-      initialStrokes={data.strokes}
+      initialMarks={data.marks}
       initialCount={data.count}
     />
   );

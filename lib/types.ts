@@ -4,7 +4,20 @@ export type Stroke = {
   size: number;
 };
 
-export type Tool = "draw" | "eraser";
+export type TextItem = {
+  x: number;
+  y: number;
+  text: string;
+  color: string;
+  fontSize: number;
+  rotate: number;
+};
+
+export type Mark =
+  | { kind: "stroke"; stroke: Stroke }
+  | { kind: "text"; item: TextItem };
+
+export type Tool = "draw" | "text" | "eraser";
 
 export const INK_COLORS = [
   "#1a1a1a",

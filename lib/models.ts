@@ -24,15 +24,29 @@ const StrokeSchema = new Schema(
   { _id: false }
 );
 
+const TextItemSchema = new Schema(
+  {
+    x: { type: Number, required: true },
+    y: { type: Number, required: true },
+    text: { type: String, required: true, maxlength: 140 },
+    color: { type: String, required: true },
+    fontSize: { type: Number, required: true, min: 8, max: 96 },
+    rotate: { type: Number, required: true, default: 0 },
+  },
+  { _id: false }
+);
+
 const SignatureSchema = new Schema(
   {
     shirtUsername: { type: String, required: true, index: true },
-    strokes: { type: [StrokeSchema], required: true },
+    strokes: { type: [StrokeSchema], default: [] },
+    texts: { type: [TextItemSchema], default: [] },
   },
   { timestamps: true }
 );
 
 export type Stroke = InferSchemaType<typeof StrokeSchema>;
+export type TextItem = InferSchemaType<typeof TextItemSchema>;
 
 export const Shirt =
   mongoose.models.Shirt || mongoose.model("Shirt", ShirtSchema);

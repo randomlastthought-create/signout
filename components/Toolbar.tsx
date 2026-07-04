@@ -93,6 +93,12 @@ export default function Toolbar({
             label="Draw"
           />
           <ToolButton
+            active={tool === "text"}
+            onClick={() => setTool("text")}
+            icon="🔤"
+            label="Add Text"
+          />
+          <ToolButton
             active={tool === "eraser"}
             onClick={() => setTool("eraser")}
             icon="🧽"

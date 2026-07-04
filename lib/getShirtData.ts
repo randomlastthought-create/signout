@@ -1,12 +1,12 @@
 import { connectDB } from "@/lib/db";
 import { Shirt, Signature } from "@/lib/models";
-import type { Stroke } from "@/lib/types";
+import type { Stroke, TextItem, Mark } from "@/lib/types";
 
 export type ShirtData = {
   username: string;
   displayName: string;
   createdAt: string;
-  strokes: Stroke[];
+  marks: Mark[];
   count: number;
 };
 
@@ -21,16 +21,29 @@ export async function getShirtData(usernameRaw: string): Promise<ShirtData | nul
 
   const sigs = await Signature.find({ shirtUsername: username })
     .sort({ createdAt: 1 })
-    .select("strokes")
-    .lean<{ strokes: Stroke[] }[]>();
+    .select("strokes texts")
+    .lean<{ strokes: Stroke[]; texts: TextItem[] }[]>();
+
+  const marks: Mark[] = sigs.flatMap((s) => [
+    ...(s.strokes ?? []).map(
+      (st): Mark => ({
+        kind: "stroke",
+        stroke: { points: st.points, color: st.color, size: st.size },
+      })
+    ),
+    ...(s.texts ?? []).map(
+      (t): Mark => ({
+        kind: "text",
+        item: { x: t.x, y: t.y, text: t.text, color: t.color, fontSize: t.fontSize, rotate: t.rotate },
+      })
+    ),
+  ]);
 
   return {
     username,
     displayName: shirt.displayName,
     createdAt: shirt.createdAt.toISOString(),
-    strokes: sigs.flatMap((s) =>
-      s.strokes.map((st) => ({ points: st.points, color: st.color, size: st.size }))
-    ),
+    marks,
     count: sigs.length,
   };
 }

@@ -1,18 +1,18 @@
 "use client";
 
 import { memo, useEffect, useRef, useState } from "react";
-import { Stage, Layer, Line, Image as KonvaImage } from "react-konva";
+import { Stage, Layer, Line, Text, Image as KonvaImage } from "react-konva";
 import type Konva from "konva";
 import type { KonvaEventObject } from "konva/lib/Node";
-import type { Stroke, Tool } from "@/lib/types";
+import type { Mark, TextItem, Tool } from "@/lib/types";
 
 export const BASE_W = 1000;
 export const BASE_H = 1150;
 
 type Props = {
-  savedStrokes: Stroke[];
-  currentStrokes: Stroke[];
-  setCurrentStrokes: React.Dispatch<React.SetStateAction<Stroke[]>>;
+  savedMarks: Mark[];
+  currentMarks: Mark[];
+  setCurrentMarks: React.Dispatch<React.SetStateAction<Mark[]>>;
   tool: Tool;
   color: string;
   size: number;
@@ -20,36 +20,63 @@ type Props = {
 
 /* Marker-ink look: multiply blending sinks the ink into the fabric shading,
    a soft same-color shadow gives a slight bleed like a real marker. */
-const inkProps = (s: Stroke) => ({
-  points: s.points,
-  stroke: s.color,
-  strokeWidth: s.size,
+const inkProps = (points: number[], color: string, size: number) => ({
+  points,
+  stroke: color,
+  strokeWidth: size,
   lineCap: "round" as const,
   lineJoin: "round" as const,
   tension: 0.35,
   opacity: 0.92,
   globalCompositeOperation: "multiply" as const,
-  shadowColor: s.color,
-  shadowBlur: s.size * 0.45,
+  shadowColor: color,
+  shadowBlur: size * 0.45,
   shadowOpacity: 0.28,
   perfectDrawEnabled: false,
   listening: false,
 });
 
-const SavedStrokes = memo(function SavedStrokes({ strokes }: { strokes: Stroke[] }) {
+const textProps = (t: TextItem, fontFamily: string) => ({
+  x: t.x,
+  y: t.y - t.fontSize * 0.8,
+  text: t.text,
+  fontSize: t.fontSize,
+  fontFamily,
+  fill: t.color,
+  rotation: t.rotate,
+  opacity: 0.92,
+  globalCompositeOperation: "multiply" as const,
+  shadowColor: t.color,
+  shadowBlur: t.fontSize * 0.12,
+  shadowOpacity: 0.2,
+  perfectDrawEnabled: false,
+  listening: false,
+});
+
+const MarksLayer = memo(function MarksLayer({
+  marks,
+  fontFamily,
+}: {
+  marks: Mark[];
+  fontFamily: string;
+}) {
   return (
     <>
-      {strokes.map((s, i) => (
-        <Line key={i} {...inkProps(s)} />
-      ))}
+      {marks.map((m, i) =>
+        m.kind === "stroke" ? (
+          <Line key={i} {...inkProps(m.stroke.points, m.stroke.color, m.stroke.size)} />
+        ) : (
+          <Text key={i} {...textProps(m.item, fontFamily)} />
+        )
+      )}
     </>
   );
 });
 
 export default function ShirtBoard({
-  savedStrokes,
-  currentStrokes,
-  setCurrentStrokes,
+  savedMarks,
+  currentMarks,
+  setCurrentMarks,
   tool,
   color,
   size,
@@ -60,11 +87,32 @@ export default function ShirtBoard({
   const drawingRef = useRef(false);
   const [width, setWidth] = useState(0);
   const [shirtImg, setShirtImg] = useState<HTMLImageElement | null>(null);
+  const [fontFamily] = useState(() => {
+    if (typeof document === "undefined") return "cursive";
+    const val = getComputedStyle(document.documentElement)
+      .getPropertyValue("--font-caveat")
+      .trim();
+    return val ? `${val}, cursive` : "cursive";
+  });
+  const [pendingText, setPendingText] = useState<{
+    x: number;
+    y: number;
+    left: number;
+    top: number;
+  } | null>(null);
+  const [draft, setDraft] = useState("");
 
   useEffect(() => {
     const img = new window.Image();
     img.src = "/shirt.svg";
     img.onload = () => setShirtImg(img);
+  }, []);
+
+  useEffect(() => {
+    document.fonts?.ready?.then(() => {
+      savedLayerRef.current?.batchDraw();
+      liveLayerRef.current?.batchDraw();
+    });
   }, []);
 
   useEffect(() => {
@@ -92,30 +140,79 @@ export default function ShirtBoard({
   };
 
   const eraseAt = (pos: { x: number; y: number }) => {
-    setCurrentStrokes((prev) =>
-      prev.filter((s) => {
-        const r = Math.max(16, s.size * 1.5);
-        for (let i = 0; i < s.points.length; i += 2) {
-          const dx = s.points[i] - pos.x;
-          const dy = s.points[i + 1] - pos.y;
-          if (dx * dx + dy * dy < r * r) return false;
+    setCurrentMarks((prev) =>
+      prev.filter((m) => {
+        if (m.kind === "stroke") {
+          const r = Math.max(16, m.stroke.size * 1.5);
+          for (let i = 0; i < m.stroke.points.length; i += 2) {
+            const dx = m.stroke.points[i] - pos.x;
+            const dy = m.stroke.points[i + 1] - pos.y;
+            if (dx * dx + dy * dy < r * r) return false;
+          }
+          return true;
         }
-        return true;
+        const t = m.item;
+        const halfW = (t.text.length * t.fontSize * 0.28) / 2;
+        const cx = t.x + halfW;
+        const cy = t.y - t.fontSize * 0.3;
+        const dx = cx - pos.x;
+        const dy = cy - pos.y;
+        const r = halfW + 20;
+        return dx * dx + dy * dy > r * r;
       })
     );
   };
 
+  const commitDraft = () => {
+    const text = draft.trim();
+    if (text && pendingText) {
+      setCurrentMarks((prev) => [
+        ...prev,
+        {
+          kind: "text",
+          item: {
+            x: pendingText.x,
+            y: pendingText.y,
+            text,
+            color,
+            fontSize: size * 3.2,
+            rotate: (Math.random() - 0.5) * 8,
+          },
+        },
+      ]);
+    }
+    setPendingText(null);
+    setDraft("");
+  };
+
   const handleDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     e.evt.preventDefault();
+    if (pendingText) return;
     const pos = getPos(e);
     if (!pos) return;
+
+    if (tool === "text") {
+      const screenPos = e.target.getStage()?.getPointerPosition();
+      if (!screenPos) return;
+      setPendingText({
+        x: pos.x,
+        y: pos.y,
+        left: screenPos.x,
+        top: screenPos.y,
+      });
+      return;
+    }
+
     drawingRef.current = true;
     if (tool === "eraser") {
       eraseAt(pos);
     } else {
-      setCurrentStrokes((prev) => [
+      setCurrentMarks((prev) => [
         ...prev,
-        { points: [pos.x, pos.y, pos.x + 0.01, pos.y + 0.01], color, size },
+        {
+          kind: "stroke",
+          stroke: { points: [pos.x, pos.y, pos.x + 0.01, pos.y + 0.01], color, size },
+        },
       ]);
     }
   };
@@ -129,15 +226,19 @@ export default function ShirtBoard({
       eraseAt(pos);
       return;
     }
-    setCurrentStrokes((prev) => {
-      const last = prev[prev.length - 1];
-      if (!last) return prev;
-      const n = last.points.length;
-      const dx = pos.x - last.points[n - 2];
-      const dy = pos.y - last.points[n - 1];
+    setCurrentMarks((prev) => {
+      const lastIdx = prev.length - 1;
+      const last = prev[lastIdx];
+      if (!last || last.kind !== "stroke") return prev;
+      const pts = last.stroke.points;
+      const dx = pos.x - pts[pts.length - 2];
+      const dy = pos.y - pts[pts.length - 1];
       if (dx * dx + dy * dy < 6) return prev;
-      const updated = { ...last, points: [...last.points, pos.x, pos.y] };
-      return [...prev.slice(0, -1), updated];
+      const updated: Mark = {
+        kind: "stroke",
+        stroke: { ...last.stroke, points: [...pts, pos.x, pos.y] },
+      };
+      return [...prev.slice(0, lastIdx), updated];
     });
   };
 
@@ -164,7 +265,10 @@ export default function ShirtBoard({
           onTouchStart={handleDown}
           onTouchMove={handleMove}
           onTouchEnd={handleUp}
-          style={{ cursor: tool === "eraser" ? "cell" : "crosshair" }}
+          style={{
+            cursor:
+              tool === "eraser" ? "cell" : tool === "text" ? "text" : "crosshair",
+          }}
         >
           <Layer listening={false}>
             {shirtImg && (
@@ -172,14 +276,37 @@ export default function ShirtBoard({
             )}
           </Layer>
           <Layer ref={savedLayerRef} listening={false}>
-            <SavedStrokes strokes={savedStrokes} />
+            <MarksLayer marks={savedMarks} fontFamily={fontFamily} />
           </Layer>
           <Layer ref={liveLayerRef} listening={false}>
-            {currentStrokes.map((s, i) => (
-              <Line key={i} {...inkProps(s)} />
-            ))}
+            <MarksLayer marks={currentMarks} fontFamily={fontFamily} />
           </Layer>
         </Stage>
+      )}
+
+      {pendingText && (
+        <input
+          autoFocus
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onBlur={commitDraft}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") commitDraft();
+            if (e.key === "Escape") {
+              setPendingText(null);
+              setDraft("");
+            }
+          }}
+          maxLength={140}
+          placeholder="Type your message…"
+          className="font-hand absolute z-10 min-w-[140px] rounded-md border border-violet-300 bg-white/95 px-2 py-1 shadow-md outline-none"
+          style={{
+            left: pendingText.left,
+            top: pendingText.top - size * 3.2 * scale * 0.8,
+            fontSize: Math.max(14, size * 3.2 * scale),
+            color,
+          }}
+        />
       )}
     </div>
   );

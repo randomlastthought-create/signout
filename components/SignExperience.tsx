@@ -6,14 +6,14 @@ import ShirtBoard from "@/components/canvas/ShirtBoardLazy";
 import Toolbar from "@/components/Toolbar";
 import CopyLinkButton from "@/components/CopyLinkButton";
 import Logo from "@/components/Logo";
-import { INK_COLORS, BRUSH_SIZES, type Stroke, type Tool } from "@/lib/types";
+import { INK_COLORS, BRUSH_SIZES, type Mark, type Tool } from "@/lib/types";
 
 type Props = {
   mode: "owner" | "visitor";
   username: string;
   displayName: string;
   createdAt: string;
-  initialStrokes: Stroke[];
+  initialMarks: Mark[];
   initialCount: number;
 };
 
@@ -22,11 +22,11 @@ export default function SignExperience({
   username,
   displayName,
   createdAt,
-  initialStrokes,
+  initialMarks,
   initialCount,
 }: Props) {
-  const [savedStrokes, setSavedStrokes] = useState<Stroke[]>(initialStrokes);
-  const [currentStrokes, setCurrentStrokes] = useState<Stroke[]>([]);
+  const [savedMarks, setSavedMarks] = useState<Mark[]>(initialMarks);
+  const [currentMarks, setCurrentMarks] = useState<Mark[]>([]);
   const [count, setCount] = useState(initialCount);
   const [color, setColor] = useState<string>(INK_COLORS[0]);
   const [size, setSize] = useState<number>(BRUSH_SIZES[1]);
@@ -35,7 +35,7 @@ export default function SignExperience({
   const [notice, setNotice] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
 
   const undo = useCallback(() => {
-    setCurrentStrokes((prev) => prev.slice(0, -1));
+    setCurrentMarks((prev) => prev.slice(0, -1));
   }, []);
 
   useEffect(() => {
@@ -50,19 +50,22 @@ export default function SignExperience({
   }, [undo]);
 
   const save = async () => {
-    if (currentStrokes.length === 0 || saving) return;
+    if (currentMarks.length === 0 || saving) return;
     setSaving(true);
     setNotice(null);
     try {
       const res = await fetch(`/api/shirts/${username}/signatures`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ strokes: currentStrokes }),
+        body: JSON.stringify({
+          strokes: currentMarks.filter((m) => m.kind === "stroke").map((m) => m.stroke),
+          texts: currentMarks.filter((m) => m.kind === "text").map((m) => m.item),
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Could not save your signature.");
-      setSavedStrokes((prev) => [...prev, ...currentStrokes]);
-      setCurrentStrokes([]);
+      setSavedMarks((prev) => [...prev, ...currentMarks]);
+      setCurrentMarks([]);
       setCount(data.count ?? count + 1);
       setNotice({ kind: "ok", text: "Your mark is on the shirt — forever! 🎉" });
     } catch (err) {
@@ -157,14 +160,14 @@ export default function SignExperience({
             <div className="mb-3 flex items-center justify-center gap-2 text-slate-600">
               <p className="text-sm font-medium">
                 <span className="font-semibold text-slate-800">Add your signature</span>{" "}
-                ✍️ — draw anywhere on the shirt!
+                ✍️ — draw or type anywhere on the shirt!
               </p>
             </div>
             <div className="rounded-4xl bg-linear-to-b from-white to-slate-100/60 p-3 shadow-[0_20px_60px_-20px_rgba(80,70,180,0.25)] sm:p-6">
               <ShirtBoard
-                savedStrokes={savedStrokes}
-                currentStrokes={currentStrokes}
-                setCurrentStrokes={setCurrentStrokes}
+                savedMarks={savedMarks}
+                currentMarks={currentMarks}
+                setCurrentMarks={setCurrentMarks}
                 tool={tool}
                 color={color}
                 size={size}
@@ -188,11 +191,11 @@ export default function SignExperience({
                 tool={tool}
                 setTool={setTool}
                 onUndo={undo}
-                canUndo={currentStrokes.length > 0}
+                canUndo={currentMarks.length > 0}
               />
               <button
                 onClick={save}
-                disabled={currentStrokes.length === 0 || saving}
+                disabled={currentMarks.length === 0 || saving}
                 className="mt-5 w-full rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-600/25 transition-all hover:bg-violet-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {saving ? "Saving…" : "✓ Save Signature"}
@@ -215,7 +218,7 @@ export default function SignExperience({
       </main>
 
       <footer className="py-6 text-center text-sm text-slate-400">
-        Made with 💜 for memories —{" "}
+        Made with 💜 by Dara and Rex for memories —{" "}
         <span className="font-hand text-base text-slate-500">
           “The best memories are the ones we create together.”
         </span>
