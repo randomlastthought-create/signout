@@ -5,19 +5,19 @@ import LoginForm from "@/components/LoginForm";
 
 const steps = [
   {
-    icon: "👕",
-    title: "Create your shirt",
-    text: "Pick a username and get your own pristine white signout shirt with a unique link.",
+    number: "01",
+    title: "Claim your shirt",
+    text: "Pick a username. That's it — a blank white shirt is yours, waiting at its own link.",
   },
   {
-    icon: "🔗",
-    title: "Share your link",
-    text: "Send signout.app/you to friends, classmates and everyone who made the journey special.",
+    number: "02",
+    title: "Pass the link around",
+    text: "signout.app/you goes in the group chat, the class list, wherever your people are.",
   },
   {
-    icon: "✍️",
-    title: "Collect signatures",
-    text: "They sign with a digital marker — messages, doodles and good vibes, saved forever.",
+    number: "03",
+    title: "Watch it fill up",
+    text: "Everyone writes, draws, and signs in real ink colors. Nothing you write can be erased by someone else.",
   },
 ];
 

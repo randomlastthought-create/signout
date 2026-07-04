@@ -36,7 +36,7 @@ export default function SignExperience({
   const [count, setCount] = useState(initialCount);
   const [color, setColor] = useState<string>(INK_COLORS[0]);
   const [size, setSize] = useState<number>(BRUSH_SIZES[1]);
-  const [tool, setTool] = useState<Tool>("draw");
+  const [tool, setTool] = useState<Tool>("text");
   const [stamp, setStamp] = useState<StampId>("heart");
   const [textRotation, setTextRotation] = useState<number>(0);
   const [saving, setSaving] = useState(false);
