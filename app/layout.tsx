@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <Toaster />
-        <WelcomeToast />
+        {/* <WelcomeToast /> */}
         <Analytics />
       </body>
     </html>
