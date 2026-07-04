@@ -5,10 +5,11 @@ import Link from "next/link";
 import ShirtBoard from "@/components/canvas/ShirtBoardLazy";
 import Toolbar from "@/components/Toolbar";
 import CopyLinkButton from "@/components/CopyLinkButton";
+import GiftBox from "@/components/GiftBox";
 import Logo from "@/components/Logo";
 import Spinner from "@/components/Spinner";
 import { toast } from "@/components/toast/Toaster";
-import { INK_COLORS, BRUSH_SIZES, type Mark, type Tool } from "@/lib/types";
+import { INK_COLORS, BRUSH_SIZES, type Mark, type Tool, type GiftDetails } from "@/lib/types";
 import type { StampId } from "@/lib/stamps";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
   createdAt: string;
   initialMarks: Mark[];
   initialCount: number;
+  gift?: GiftDetails | null;
 };
 
 export default function SignExperience({
@@ -27,6 +29,7 @@ export default function SignExperience({
   createdAt,
   initialMarks,
   initialCount,
+  gift,
 }: Props) {
   const MAX_SIGNS_PER_USER = 2;
   const storageKey = `signout_sigs_${username}`;
@@ -264,6 +267,8 @@ export default function SignExperience({
           </aside>
         </div>
       </main>
+
+      {gift && <GiftBox gift={gift} displayName={displayName} />}
 
       {/* Mobile action bar: Undo + Save always within thumb reach */}
       <div className="fixed inset-x-0 bottom-0 z-30 lg:hidden">

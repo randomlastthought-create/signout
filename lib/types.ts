@@ -19,6 +19,12 @@ export type Mark =
 
 export type Tool = "draw" | "text" | "stamp" | "eraser";
 
+export type GiftDetails = {
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+};
+
 export const INK_COLORS = [
   "#1a1a1a",
   "#2563eb",

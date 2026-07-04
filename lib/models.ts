@@ -1,5 +1,14 @@
 import mongoose, { Schema, type InferSchemaType } from "mongoose";
 
+const GiftSchema = new Schema(
+  {
+    bankName: { type: String, required: true, trim: true, maxlength: 50 },
+    accountName: { type: String, required: true, trim: true, maxlength: 80 },
+    accountNumber: { type: String, required: true, trim: true, maxlength: 20 },
+  },
+  { _id: false }
+);
+
 const ShirtSchema = new Schema(
   {
     username: {
@@ -11,6 +20,7 @@ const ShirtSchema = new Schema(
       match: /^[a-z0-9-]{3,20}$/,
     },
     displayName: { type: String, required: true, trim: true, maxlength: 50 },
+    gift: { type: GiftSchema, default: null },
   },
   { timestamps: true }
 );

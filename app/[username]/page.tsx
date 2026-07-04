@@ -39,6 +39,7 @@ export default async function ShirtPage({ params }: Props) {
       createdAt={data.createdAt}
       initialMarks={data.marks}
       initialCount={data.count}
+      gift={data.gift}
     />
   );
 }

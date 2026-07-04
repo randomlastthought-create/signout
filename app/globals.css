@@ -51,3 +51,74 @@ body {
 .animate-toast-out {
   animation: toast-out 0.22s ease-in forwards;
 }
+
+/* Gift modal + floating gift box */
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Periodic wiggle so the gift box catches the eye without being annoying. */
+@keyframes gift-wiggle {
+  0%,
+  86%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  88% {
+    transform: rotate(-12deg) scale(1.1);
+  }
+  91% {
+    transform: rotate(12deg) scale(1.1);
+  }
+  94% {
+    transform: rotate(-8deg) scale(1.05);
+  }
+  97% {
+    transform: rotate(6deg) scale(1);
+  }
+}
+
+.animate-overlay-in {
+  animation: overlay-in 0.2s ease-out forwards;
+}
+
+.animate-modal-pop {
+  animation: modal-pop 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+.animate-gift-wiggle {
+  display: inline-block;
+  animation: gift-wiggle 3.5s ease-in-out infinite;
+}
+
+/* Nudge card rises from the gift button after a short delay. */
+@keyframes nudge-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-nudge-in {
+  animation: nudge-in 0.32s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}

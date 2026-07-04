@@ -36,6 +36,7 @@ export default async function DashboardPage({ params }: Props) {
       createdAt={data.createdAt}
       initialMarks={data.marks}
       initialCount={data.count}
+      gift={data.gift}
     />
   );
 }

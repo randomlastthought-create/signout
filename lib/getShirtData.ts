@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/db";
 import { Shirt, Signature } from "@/lib/models";
-import type { Stroke, TextItem, Mark } from "@/lib/types";
+import type { Stroke, TextItem, Mark, GiftDetails } from "@/lib/types";
 
 export type ShirtData = {
   username: string;
@@ -8,6 +8,7 @@ export type ShirtData = {
   createdAt: string;
   marks: Mark[];
   count: number;
+  gift: GiftDetails | null;
 };
 
 export async function getShirtData(usernameRaw: string): Promise<ShirtData | null> {
@@ -15,8 +16,8 @@ export async function getShirtData(usernameRaw: string): Promise<ShirtData | nul
   await connectDB();
 
   const shirt = await Shirt.findOne({ username })
-    .select("displayName createdAt")
-    .lean<{ displayName: string; createdAt: Date }>();
+    .select("displayName createdAt gift")
+    .lean<{ displayName: string; createdAt: Date; gift?: GiftDetails | null }>();
   if (!shirt) return null;
 
   const sigs = await Signature.find({ shirtUsername: username })
@@ -45,5 +46,12 @@ export async function getShirtData(usernameRaw: string): Promise<ShirtData | nul
     createdAt: shirt.createdAt.toISOString(),
     marks,
     count: sigs.length,
+    gift: shirt.gift
+      ? {
+          bankName: shirt.gift.bankName,
+          accountName: shirt.gift.accountName,
+          accountNumber: shirt.gift.accountNumber,
+        }
+      : null,
   };
 }
