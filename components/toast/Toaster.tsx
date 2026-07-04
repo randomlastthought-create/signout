@@ -31,9 +31,9 @@ function dismiss(id: number) {
   }, 220);
 }
 
-function push(kind: ToastKind, title: string, description?: string) {
+function push(kind: ToastKind, title: string, description?: string, durationOverride?: number) {
   const id = nextId++;
-  const duration = kind === "error" ? 5000 : 3800;
+  const duration = durationOverride ?? (kind === "error" ? 5000 : 3800);
   toasts = [...toasts, { id, kind, title, description, duration, leaving: false }].slice(-4);
   emit();
   setTimeout(() => dismiss(id), duration);
@@ -41,9 +41,12 @@ function push(kind: ToastKind, title: string, description?: string) {
 }
 
 export const toast = {
-  success: (title: string, description?: string) => push("success", title, description),
-  error: (title: string, description?: string) => push("error", title, description),
-  info: (title: string, description?: string) => push("info", title, description),
+  success: (title: string, description?: string, duration?: number) =>
+    push("success", title, description, duration),
+  error: (title: string, description?: string, duration?: number) =>
+    push("error", title, description, duration),
+  info: (title: string, description?: string, duration?: number) =>
+    push("info", title, description, duration),
   dismiss,
 };
 
@@ -68,8 +71,8 @@ const KIND_STYLES: Record<ToastKind, { badge: string; bar: string; icon: React.R
     ),
   },
   info: {
-    badge: "bg-linear-to-br from-violet-400 to-purple-600",
-    bar: "bg-violet-500",
+    badge: "bg-linear-to-br from-slate-700 to-slate-900",
+    bar: "bg-slate-800",
     icon: (
       <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" aria-hidden>
         <circle cx="10" cy="5.5" r="1.4" fill="currentColor" />
@@ -105,7 +108,7 @@ export default function Toaster() {
         return (
           <div
             key={t.id}
-            className={`pointer-events-auto relative flex w-full max-w-sm items-start gap-3 overflow-hidden rounded-2xl border border-slate-200/70 bg-white/95 p-3.5 pr-2 shadow-[0_12px_40px_-12px_rgba(80,70,180,0.4)] backdrop-blur-md ${
+            className={`pointer-events-auto relative flex w-full max-w-sm items-center gap-2 overflow-hidden rounded-2xl border border-slate-200/70 bg-white/95 p-3.5 pr-2 shadow-[0_12px_40px_-12px_rgba(80,70,180,0.4)] backdrop-blur-md ${
               t.leaving ? "animate-toast-out" : "animate-toast-in"
             }`}
           >
@@ -114,10 +117,10 @@ export default function Toaster() {
             >
               {s.icon}
             </span>
-            <div className="min-w-0 flex-1 pt-0.5">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold text-slate-900">{t.title}</p>
               {t.description && (
-                <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{t.description}</p>
+                <p className="text-xs leading-snug text-slate-500">{t.description}</p>
               )}
             </div>
             <button

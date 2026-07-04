@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Caveat } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Toaster from "@/components/toast/Toaster";
+import WelcomeToast from "@/components/toast/WelcomeToast";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <Toaster />
+        <WelcomeToast />
         <Analytics />
       </body>
     </html>
