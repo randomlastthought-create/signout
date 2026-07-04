@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# signout — leave your mark ✦
 
-## Getting Started
+The Nigerian university signout shirt tradition, digital. Every user gets a
+white T-shirt at a unique link (`/username`) that friends can sign with a
+marker — permanently.
 
-First, run the development server:
+## Stack
+
+Next.js (App Router) · TypeScript · Tailwind CSS · React Konva · MongoDB (Mongoose)
+
+## Setup
 
 ```bash
+npm install
+cp .env.example .env.local   # then add your MONGODB_URI
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How it works
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Landing (`/`)** — create a shirt with a display name + unique username.
+- **Owner dashboard (`/username/dashboard`)** — stats, shareable link, and the shirt.
+- **Public page (`/username`)** — anyone can draw on the shirt (colors, brush
+  sizes, eraser, undo / Ctrl+Z) and save their signature permanently.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Signatures are stored as stroke data (points, color, size) — not images — and
+rendered on a React Konva canvas over an SVG shirt, with multiply blending so
+the ink sinks into the fabric shading.
 
-## Learn More
+## API
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Method | Route | Purpose |
+| --- | --- | --- |
+| `POST` | `/api/shirts` | Create a shirt `{ displayName, username }` |
+| `GET` | `/api/shirts/:username/signatures` | List signatures |
+| `POST` | `/api/shirts/:username/signatures` | Add a signature `{ strokes }` |

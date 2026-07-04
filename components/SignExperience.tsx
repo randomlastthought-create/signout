@@ -160,7 +160,7 @@ export default function SignExperience({
                 ✍️ — draw anywhere on the shirt!
               </p>
             </div>
-            <div className="rounded-[2rem] bg-gradient-to-b from-white to-slate-100/60 p-3 shadow-[0_20px_60px_-20px_rgba(80,70,180,0.25)] sm:p-6">
+            <div className="rounded-4xl bg-linear-to-b from-white to-slate-100/60 p-3 shadow-[0_20px_60px_-20px_rgba(80,70,180,0.25)] sm:p-6">
               <ShirtBoard
                 savedStrokes={savedStrokes}
                 currentStrokes={currentStrokes}
