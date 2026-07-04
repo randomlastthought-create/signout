@@ -508,6 +508,20 @@ export default function ShirtBoard({
                 {STAMPS.find((s) => s.id === id)?.icon}
               </button>
             ))}
+            <div className="mx-0.5 h-3 w-px bg-slate-200" />
+            <button
+              onClick={() => {
+                setPendingText(null);
+                setDraft("");
+              }}
+              aria-label="Cancel"
+              title="Cancel — discard this text"
+              className="flex h-5 w-5 items-center justify-center rounded-full text-slate-400 transition-all hover:bg-red-50 hover:text-red-500 active:scale-95"
+            >
+              <svg viewBox="0 0 20 20" fill="none" className="h-3 w-3" aria-hidden>
+                <path d="M5.5 5.5l9 9m0-9l-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
           </div>
         </div>
       )}

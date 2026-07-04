@@ -40,16 +40,15 @@ export default function SignExperience({
   const [stamp, setStamp] = useState<StampId>("heart");
   const [textRotation, setTextRotation] = useState<number>(0);
   const [saving, setSaving] = useState(false);
-  const [mySignCount, setMySignCount] = useState(0);
-  const stageRef = useRef<import("konva").default.Stage | null>(null);
-
-  // Read this user's signature count from localStorage on mount
-  useEffect(() => {
+  const [mySignCount, setMySignCount] = useState(() => {
     try {
       const stored = localStorage.getItem(storageKey);
-      if (stored) setMySignCount(parseInt(stored, 10) || 0);
-    } catch { /* localStorage unavailable */ }
-  }, [storageKey]);
+      return stored ? parseInt(stored, 10) || 0 : 0;
+    } catch {
+      return 0;
+    }
+  });
+  const stageRef = useRef<import("konva").default.Stage | null>(null);
 
   const reachedLimit = mySignCount >= MAX_SIGNS_PER_USER;
   const remainingSigns = MAX_SIGNS_PER_USER - mySignCount;
@@ -142,7 +141,7 @@ export default function SignExperience({
                 <div className="mt-4 rounded-xl bg-slate-50 p-3 text-left">
                   <p className="text-xs font-medium text-slate-500">Your unique link</p>
                   <p className="mt-1 truncate font-mono text-sm font-semibold text-violet-700">
-                    signout.app/{username}
+                    https://signout-tan.vercel.app/{username}
                   </p>
                 </div>
               )}

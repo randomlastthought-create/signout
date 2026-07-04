@@ -15,11 +15,12 @@ body {
   font-family: var(--font-hand), cursive;
 }
 
-/* Toast animations */
+/* Toast animations: toasts always live bottom-right, so they rise in from
+   below and settle back down on exit. */
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateY(-10px) scale(0.96);
+    transform: translateY(12px) scale(0.96);
   }
   to {
     opacity: 1;
@@ -30,7 +31,7 @@ body {
 @keyframes toast-out {
   to {
     opacity: 0;
-    transform: translateY(-6px) scale(0.96);
+    transform: translateY(8px) scale(0.96);
   }
 }
 
@@ -49,24 +50,4 @@ body {
 
 .animate-toast-out {
   animation: toast-out 0.22s ease-in forwards;
-}
-
-/* Toasts rise from the bottom on desktop (bottom-right placement) */
-@media (min-width: 640px) {
-  @keyframes toast-in {
-    from {
-      opacity: 0;
-      transform: translateY(12px) scale(0.96);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-  @keyframes toast-out {
-    to {
-      opacity: 0;
-      transform: translateY(8px) scale(0.96);
-    }
-  }
 }
