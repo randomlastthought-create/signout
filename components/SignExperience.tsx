@@ -322,12 +322,12 @@ export default function SignExperience({
         )}
       </div>
 
-      <footer className="hidden px-4 py-6 text-center text-sm text-slate-400 lg:block">
+      {/* <footer className="hidden px-4 py-6 text-center text-sm text-slate-400 lg:block">
         Made with 💜 by Dara and Rex for memories —{" "}
         <span className="font-hand text-base text-slate-500">
           “The best memories are the ones we create together.”
         </span>
-      </footer>
+      </footer> */}
     </div>
   );
 }

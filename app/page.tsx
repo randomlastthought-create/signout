@@ -106,12 +106,12 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="py-8 text-center text-sm text-slate-400">
+      {/* <footer className="py-8 text-center text-sm text-slate-400">
         Made with 💜 by Dara and Rex for memories —{" "}
         <span className="font-hand text-base text-slate-500">
           “The best memories are the ones we create together.”
         </span>
-      </footer>
+      </footer> */}
     </div>
   );
 }
